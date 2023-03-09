@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import scrolledtext
 from PIL import Image, ImageTk
 import requests
+import pygame
 
 window = tk.Tk()
 window.geometry("640x800")
@@ -15,15 +16,37 @@ voiceText = tk.StringVar()
 voice = scrolledtext.ScrolledText(window, wrap=tk.WORD, width=60, height=6)
 voice.grid(column=2, row=2, padx=5, pady=5)
 
-def GenerateVoice():
-    response = requests.get('https://api.elevenlabs.io/openapi.json')
-    print(response.status_code)
-    print(response.json())
+pygame.mixer.init()
 
+voice_id = 'q2hdaLxGtlbMLaQR1foF'
+def GenerateVoice():
+    t = voice.get('1.0', tk.END)
+
+    header = {'accept': 'audio/mpeg', 
+               'xi-api-key': '6a1e9174b98828f5eeb8ff828662fc3e', 
+               'Content-Type': 'application/json',
+                }
+    datas = {
+    "text": t,
+    "voice_settings": {
+        "stability": 0,
+        "similarity_boost": 0
+        }
+    }
+    response = requests.post(f'https://api.elevenlabs.io/v1/text-to-speech/q2hdaLxGtlbMLaQR1foF',json=datas, headers= header)
+
+    if response.status_code == 200:
+        print(type(response.encoding))
+        print(response)
+        print(response._content)
+    else:
+        print(response)
+        print(response.headers)
+    
 button = tk.Button(window, text="Generate voice", command=GenerateVoice)
 button.grid(column=0, row=2, padx=5, pady=5)
 
-logo = Image.open('ganyu.gif')
+logo = Image.open('BackGround.gif')
 logo = ImageTk.PhotoImage(logo)
 logo_label = tk.Label(image=logo)
 logo_label.image_names = logo
