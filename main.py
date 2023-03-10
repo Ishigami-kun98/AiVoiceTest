@@ -3,9 +3,6 @@ from tkinter import scrolledtext
 from PIL import Image, ImageTk
 import requests
 import os
-
-
-import io
 import time
 from pygame import mixer
 

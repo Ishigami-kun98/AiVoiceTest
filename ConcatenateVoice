@@ -1,4 +1,3 @@
-import soundfile as sf
 import os
 from pydub import AudioSegment
 from os import listdir
