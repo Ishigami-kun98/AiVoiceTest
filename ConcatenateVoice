@@ -1,0 +1,29 @@
+import soundfile as sf
+import os
+from pydub import AudioSegment
+from os import listdir
+from os.path import isfile, join
+import tqdm
+
+onlyfiles = [f for f in listdir('VoiceToClone') if isfile(join('VoiceToClone', f))]
+voices_dir = "VoiceToClone/"
+result_path = "CombinedVoice/Merged.mp3"
+
+sound_path1 = voices_dir + onlyfiles[0]
+sound1 = AudioSegment.from_ogg(sound_path1)
+
+first = True
+
+progressBar = tqdm(onlyfiles, desc="Merging")
+for voice in progressBar:
+    if first:
+        first = False
+    else:
+        sound_path2 = voices_dir + voice
+        sound2 = AudioSegment.from_ogg(sound_path2)
+        sound1 = sound1.append(sound2, crossfade = 100)
+
+if os.path.exists(result_path):
+    os.remove(result_path)
+sound1.export(result_path, format='mp3')
+print("ended")

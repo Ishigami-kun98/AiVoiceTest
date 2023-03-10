@@ -5,6 +5,14 @@ import requests
 import os
 
 
+import io
+import time
+from pygame import mixer
+
+
+mixer.init()
+
+
 window = tk.Tk()
 window.geometry("640x800")
 window.title("Voice Speech Project")
@@ -17,27 +25,52 @@ voiceText = tk.StringVar()
 voice = scrolledtext.ScrolledText(window, wrap=tk.WORD, width=60, height=6)
 voice.grid(column=2, row=2, padx=5, pady=5)
 
-voice_id = 'q2hdaLxGtlbMLaQR1foF'
+#voice_id = 'q2hdaLxGtlbMLaQR1foF'
+voice_id = 'SPZ1bhwdKu3Rn0RUWBIe'
+# voice_id = '21m00Tcm4TlvDq8ikWAM'
 def GenerateVoice():
     t = voice.get('1.0', tk.END)
 
-    header = {'accept': 'audio/mpeg', 
+    post_header = {'accept': 'audio/mpeg', 
                'xi-api-key': '6a1e9174b98828f5eeb8ff828662fc3e', 
                'Content-Type': 'application/json',
                 }
-    datas = {
+    post_datas = {
     "text": t,
     "voice_settings": {
         "stability": 0,
         "similarity_boost": 0
         }
     }
-    response = requests.post(f'https://api.elevenlabs.io/v1/text-to-speech/q2hdaLxGtlbMLaQR1foF',json=datas, headers= header)
 
+    get_header = {'accept': 'application/json', 
+               'xi-api-key': '6a1e9174b98828f5eeb8ff828662fc3e', 
+
+            }
+    response = requests.post(f'https://api.elevenlabs.io/v1/text-to-speech/q2hdaLxGtlbMLaQR1foF',json=post_datas, headers= post_header)
+    '''response_get = requests.get(f'https://api.elevenlabs.io/v1/voices', headers=get_header)
+    if response_get.status_code == 200:
+        all = response_get.json()
+        for voce in all['voices']:
+            print(voce)'''
+    # response_get = requests.get(f'https://api.elevenlabs.io/v1/voices/{voice_id}', headers=get_header)
+    # print(response_get.content)
     if response.status_code == 200:
-        print(type(response.encoding))
-        print(response)
-        print(response._content)
+
+        data = response.content
+        if os.path.exists("myfile.mp3"):
+            os.remove("myfile.mp3")
+        else:
+            print("file doesnt exist")
+        with open('myfile.mp3', mode='bx+') as f:
+            f.write(data)
+            f.close()
+        mixer.music.load("myfile.mp3")
+        mixer.music.play()
+        while mixer.music.get_busy():  # wait for music to finish playing
+            time.sleep(1)
+        mixer.music.unload()
+ 
     else:
         print(response)
         print(response.headers)
