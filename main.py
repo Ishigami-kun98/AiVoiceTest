@@ -23,7 +23,7 @@ voice = scrolledtext.ScrolledText(window, wrap=tk.WORD, width=60, height=6)
 voice.grid(column=2, row=2, padx=5, pady=5)
 
 #voice_id = 'q2hdaLxGtlbMLaQR1foF'
-voice_id = 'SPZ1bhwdKu3Rn0RUWBIe'
+voice_id = 'nJIqabccGu6XcekSdjkK'
 # voice_id = '21m00Tcm4TlvDq8ikWAM'
 def GenerateVoice():
     t = voice.get('1.0', tk.END)
@@ -44,12 +44,12 @@ def GenerateVoice():
                'xi-api-key': '6a1e9174b98828f5eeb8ff828662fc3e', 
 
             }
-    response = requests.post(f'https://api.elevenlabs.io/v1/text-to-speech/q2hdaLxGtlbMLaQR1foF',json=post_datas, headers= post_header)
-    '''response_get = requests.get(f'https://api.elevenlabs.io/v1/voices', headers=get_header)
-    if response_get.status_code == 200:
-        all = response_get.json()
-        for voce in all['voices']:
-            print(voce)'''
+    response = requests.post(f'https://api.elevenlabs.io/v1/text-to-speech/{voice_id}',json=post_datas, headers= post_header)
+    response_get = requests.get(f'https://api.elevenlabs.io/v1/voices', headers=get_header)
+    # if response_get.status_code == 200:
+    #     all = response_get.json()
+    #     for voce in all['voices']:
+    #         print(voce)
     # response_get = requests.get(f'https://api.elevenlabs.io/v1/voices/{voice_id}', headers=get_header)
     # print(response_get.content)
     if response.status_code == 200:

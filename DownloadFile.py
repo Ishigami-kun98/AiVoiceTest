@@ -4,7 +4,7 @@ import os
 
 VoiceFolder = "VoiceToClone/"
 
-response = requests.get('https://genshin-impact.fandom.com/wiki/Ganyu/Voice-Overs')
+response = requests.get('https://genshin-impact.fandom.com/wiki/Ganyu/Voice-Overs/Japanese')
 if response.ok:
     print('Connected succesfully')
     # print(response.headers)
